@@ -1,20 +1,20 @@
 {
-    "name": "responsively-lazy",
+    "name": "lazzy",
     "title": "Responsively Lazy",
-    "version": "2.0.2",
+    "version": "1.0.0",
     "description": "Lazy load responsive images",
-    "homepage": "http://ivopetkov.com/b/lazy-load-responsive-images/",
+    "homepage": "",
     "author": {
-        "name": "Ivo Petkov",
-        "email": "ivo@ivopetkov.com",
-        "url": "http://ivopetkov.com/"
+        "name": "ID01010010",
+        "email": "id01010010@gmail.com",
+        "url": ""
     },
     "repository": {
         "type": "git",
-        "url": "https://github.com/ivopetkov/responsively-lazy"
+        "url": "https://github.com/ID01010010/lazzy"
     },
     "bugs": {
-        "url": "https://github.com/ivopetkov/responsively-lazy/issues"
+        "url": "https://github.com/ID01010010/lazzy/issues"
     },
     "keywords": [
         "images",

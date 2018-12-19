@@ -1,11 +1,8 @@
 /*
- * Responsively Lazy
- * http://ivopetkov.com/b/lazy-load-responsive-images/
- * Copyright 2015-2017, Ivo Petkov
- * Free to use under the MIT license.
+ * Based on http://ivopetkov.com/b/lazy-load-responsive-images/
  */
 
-var responsivelyLazy = typeof responsivelyLazy !== 'undefined' ? responsivelyLazy : (function () {
+var lazzy = typeof lazzy !== 'undefined' ? lazzy : (function () {
 
     var hasWebPSupport = false;
     var hasSrcSetSupport = false;
@@ -14,6 +11,7 @@ var responsivelyLazy = typeof responsivelyLazy !== 'undefined' ? responsivelyLaz
     var hasIntersectionObserverSupport = typeof IntersectionObserver !== 'undefined';
     var mutationObserverIsDisabled = false;
     var doneElements = []; // elements that should never be updated again
+    var elementsSelector = '.lazzy';
 
     var isVisible = function (element) {
         if (windowWidth === null) {
@@ -129,14 +127,14 @@ var responsivelyLazy = typeof responsivelyLazy !== 'undefined' ? responsivelyLaz
             bestSelectedOption = [element.getAttribute('src'), 999999];
         }
 
-        if (typeof container.responsivelyLazyLastSetOption === 'undefined') {
-            container.responsivelyLazyLastSetOption = ['', 0];
+        if (typeof container.lazzyLastSetOption === 'undefined') {
+            container.lazzyLastSetOption = ['', 0];
         }
-        if (container.responsivelyLazyLastSetOption[1] < bestSelectedOption[1]) {
-            container.responsivelyLazyLastSetOption = bestSelectedOption;
+        if (container.lazzyLastSetOption[1] < bestSelectedOption[1]) {
+            container.lazzyLastSetOption = bestSelectedOption;
             var url = bestSelectedOption[0];
-            if (typeof container.responsivelyLazyEventsAttached === 'undefined') {
-                container.responsivelyLazyEventsAttached = true;
+            if (typeof container.lazzyEventsAttached === 'undefined') {
+                container.lazzyEventsAttached = true;
                 element.addEventListener('load', function () {
                     var handler = container.getAttribute('data-onlazyload');
                     if (handler !== null) {
@@ -144,7 +142,7 @@ var responsivelyLazy = typeof responsivelyLazy !== 'undefined' ? responsivelyLaz
                     }
                 }, false);
                 element.addEventListener('error', function () {
-                    container.responsivelyLazyLastSetOption = ['', 0];
+                    container.lazzyLastSetOption = ['', 0];
                 }, false);
             }
             if (url === element.getAttribute('src')) {
@@ -198,8 +196,9 @@ var responsivelyLazy = typeof responsivelyLazy !== 'undefined' ? responsivelyLaz
 
     };
 
-    var run = function () {
-        var elements = document.querySelectorAll('.responsively-lazy');
+    var run = function (selector) {
+        elementsSelector = selector || elementsSelector;
+        var elements = document.querySelectorAll(elementsSelector);
         var elementsCount = elements.length;
         for (var i = 0; i < elementsCount; i++) {
             updateElement(elements[i]);
@@ -234,12 +233,12 @@ var responsivelyLazy = typeof responsivelyLazy !== 'undefined' ? responsivelyLaz
             if (hasIntersectionObserverSupport) {
 
                 var updateIntersectionObservers = function () {
-                    var elements = document.querySelectorAll('.responsively-lazy');
+                    var elements = document.querySelectorAll(elementsSelector);
                     var elementsCount = elements.length;
                     for (var i = 0; i < elementsCount; i++) {
                         var element = elements[i];
-                        if (typeof element.responsivelyLazyObserverAttached === 'undefined') {
-                            element.responsivelyLazyObserverAttached = true;
+                        if (typeof element.lazzyObserverAttached === 'undefined') {
+                            element.lazzyObserverAttached = true;
                             intersectionObserver.observe(element);
                         }
                     }
@@ -270,13 +269,13 @@ var responsivelyLazy = typeof responsivelyLazy !== 'undefined' ? responsivelyLaz
             };
 
             var updateParentNodesScrollListeners = function () {
-                var elements = document.querySelectorAll('.responsively-lazy');
+                var elements = document.querySelectorAll(elementsSelector);
                 var elementsCount = elements.length;
                 for (var i = 0; i < elementsCount; i++) {
                     var parentNode = elements[i].parentNode;
                     while (parentNode && parentNode.tagName.toLowerCase() !== 'html') {
-                        if (typeof parentNode.responsivelyLazyScrollAttached === 'undefined') {
-                            parentNode.responsivelyLazyScrollAttached = true;
+                        if (typeof parentNode.lazzyScrollAttached === 'undefined') {
+                            parentNode.lazzyScrollAttached = true;
                             parentNode.addEventListener('scroll', setChanged);
                         }
                         parentNode = parentNode.parentNode;

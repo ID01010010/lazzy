@@ -1,7 +1,3 @@
-/*
- * Based on http://ivopetkov.com/b/lazy-load-responsive-images/
- */
-
 var lazzy = typeof lazzy !== 'undefined' ? lazzy : (function () {
 
     var hasWebPSupport = false;
@@ -304,7 +300,10 @@ var lazzy = typeof lazzy !== 'undefined' ? lazzy : (function () {
                             setChanged();
                         }
                     });
-                    observer.observe(document.querySelector('body'), {childList: true, subtree: true});
+                    observer.observe(document.querySelector('body'), {
+                        childList: true,
+                        subtree: true
+                    });
                 }
             };
             if (document.readyState === 'loading') {

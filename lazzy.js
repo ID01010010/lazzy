@@ -6,19 +6,37 @@ var lazzy = typeof lazzy !== 'undefined' ? lazzy : (function () {
     var windowHeight = null;
     var hasIntersectionObserverSupport = typeof IntersectionObserver !== 'undefined';
     var mutationObserverIsDisabled = false;
-    var doneElements = []; // elements that should never be updated again
-    var elementsSelector = '.lazzy';
+    var doneElements = [];
+
+    var _selector = '.lazzy';
+    var _offsetY = 0;
+    var _offsetX = 0;
+    var _preload = false;
 
     var isVisible = function (element) {
         if (windowWidth === null) {
             return false;
         }
-        var rect = element.getBoundingClientRect();
-        var elementTop = rect.top;
-        var elementLeft = rect.left;
-        var elementWidth = rect.width;
-        var elementHeight = rect.height;
-        return elementTop < windowHeight && elementTop + elementHeight > 0 && elementLeft < windowWidth && elementLeft + elementWidth > 0;
+
+        var e = element.getBoundingClientRect();
+        var positionY = e.top + _offsetY;
+        var positionX = e.left + _offsetX;
+
+        if (_preload) {
+            return (
+                positionY + e.height > 0 &&
+                positionY < windowHeight * 2 &&
+                positionX + e.width > 0 &&
+                positionX < windowWidth * 2
+            );
+        }
+
+        return (
+            positionY + e.height > 0 &&
+            positionY < windowHeight &&
+            positionX + e.width > 0 &&
+            positionX < windowWidth
+        );
     };
 
     var evalScripts = function (scripts, startIndex) {
@@ -192,10 +210,17 @@ var lazzy = typeof lazzy !== 'undefined' ? lazzy : (function () {
 
     };
 
-    var run = function (selector) {
-        elementsSelector = selector || elementsSelector;
-        var elements = document.querySelectorAll(elementsSelector);
+    var run = function (options) {
+        var opt = options || {};
+
+        _selector = opt.selector || _selector;
+        _offsetY = opt.offsetY || _offsetY;
+        _offsetX = opt.offsetX || _offsetX;
+        _preload = opt.preload || _preload;
+
+        var elements = document.querySelectorAll(_selector);
         var elementsCount = elements.length;
+
         for (var i = 0; i < elementsCount; i++) {
             updateElement(elements[i]);
         }
@@ -229,7 +254,7 @@ var lazzy = typeof lazzy !== 'undefined' ? lazzy : (function () {
             if (hasIntersectionObserverSupport) {
 
                 var updateIntersectionObservers = function () {
-                    var elements = document.querySelectorAll(elementsSelector);
+                    var elements = document.querySelectorAll(_selector);
                     var elementsCount = elements.length;
                     for (var i = 0; i < elementsCount; i++) {
                         var element = elements[i];
@@ -265,7 +290,7 @@ var lazzy = typeof lazzy !== 'undefined' ? lazzy : (function () {
             };
 
             var updateParentNodesScrollListeners = function () {
-                var elements = document.querySelectorAll(elementsSelector);
+                var elements = document.querySelectorAll(_selector);
                 var elementsCount = elements.length;
                 for (var i = 0; i < elementsCount; i++) {
                     var parentNode = elements[i].parentNode;

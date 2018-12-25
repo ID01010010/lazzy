@@ -39,6 +39,15 @@ Or apply lazzy to all images:
 lazzy.run('img');
 ```
 
+With Lazzy, you can easily preload your images by adding an offset:
+```js
+lazzy.run({
+    selector: '.my-lazzy-selector',
+    offset: 100 // Load images 100px earlier. 0 by default
+});
+```
+In addition, `offsetX` is available in options to use in some special cases
+
 ## A concept
 
 A lightweight lib that doesn't break your HTML by removing the `src`.

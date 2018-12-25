@@ -9,9 +9,8 @@ var lazzy = typeof lazzy !== 'undefined' ? lazzy : (function () {
     var doneElements = [];
 
     var _selector = '.lazzy';
-    var _offsetY = 0;
+    var _offset = 0;
     var _offsetX = 0;
-    var _preload = false;
 
     var isVisible = function (element) {
         if (windowWidth === null) {
@@ -19,23 +18,14 @@ var lazzy = typeof lazzy !== 'undefined' ? lazzy : (function () {
         }
 
         var e = element.getBoundingClientRect();
-        var positionY = e.top + _offsetY;
-        var positionX = e.left + _offsetX;
-
-        if (_preload) {
-            return (
-                positionY + e.height > 0 &&
-                positionY < windowHeight * 2 &&
-                positionX + e.width > 0 &&
-                positionX < windowWidth * 2
-            );
-        }
+        var rectTop = e.top + (- _offset);
+        var rectBottom = e.bottom + _offset;
+        var rectLeft = e.left + (- _offsetX);
 
         return (
-            positionY + e.height > 0 &&
-            positionY < windowHeight &&
-            positionX + e.width > 0 &&
-            positionX < windowWidth
+            (rectTop + e.height > 0 && rectTop < windowHeight) &&
+            (rectLeft + e.width > 0 && rectLeft < windowWidth) ||
+            (rectBottom > 0 && rectBottom < windowHeight)
         );
     };
 
@@ -183,7 +173,9 @@ var lazzy = typeof lazzy !== 'undefined' ? lazzy : (function () {
         }
 
         var lazyContent = element.getAttribute('data-lazycontent');
+        console.log(lazyContent);
         if (lazyContent !== null) {
+            console.log('lazyContent');
             doneElements.push(element);
             mutationObserverIsDisabled = true;
             element.innerHTML = lazyContent;
@@ -211,12 +203,14 @@ var lazzy = typeof lazzy !== 'undefined' ? lazzy : (function () {
     };
 
     var run = function (options) {
-        var opt = options || {};
-
-        _selector = opt.selector || _selector;
-        _offsetY = opt.offsetY || _offsetY;
-        _offsetX = opt.offsetX || _offsetX;
-        _preload = opt.preload || _preload;
+        if (typeof options === 'string') {
+            _selector = options || _selector;
+        }
+        if (typeof options === 'object') {
+            _selector = options.selector || _selector;
+            _offset = options.offset || _offset;
+            _offsetX = options.offsetX || _offsetX;
+        }
 
         var elements = document.querySelectorAll(_selector);
         var elementsCount = elements.length;

@@ -1,61 +1,30 @@
 var lazzy = typeof lazzy !== 'undefined' ? lazzy : (function () {
-
-    var hasWebPSupport = false;
-    var hasSrcSetSupport = false;
-    var windowWidth = null;
-    var windowHeight = null;
-    var hasIntersectionObserverSupport = typeof IntersectionObserver !== 'undefined';
-    var mutationObserverIsDisabled = false;
-    var doneElements = [];
-
+    var _hasWebPSupport = false;
+    var _hasSrcSetSupport = false;
+    var _windowWidth = null;
+    var _windowHeight = null;
+    var _hasIntersectionObserverSupport = typeof IntersectionObserver !== 'undefined';
+    var _mutationObserverIsDisabled = false;
+    var _doneElements = [];
     var _selector = '.lazzy';
     var _offset = 0;
     var _offsetX = 0;
 
     var isVisible = function (element) {
-        if (windowWidth === null) {
+        if (_windowWidth === null) {
             return false;
         }
 
         var e = element.getBoundingClientRect();
-        var rectTop = e.top + (- _offset);
+        var rectTop = e.top + (-_offset);
         var rectBottom = e.bottom + _offset;
-        var rectLeft = e.left + (- _offsetX);
+        var rectLeft = e.left + (-_offsetX);
 
         return (
-            (rectTop + e.height > 0 && rectTop < windowHeight) &&
-            (rectLeft + e.width > 0 && rectLeft < windowWidth) ||
-            (rectBottom > 0 && rectBottom < windowHeight)
+            (rectTop + e.height > 0 && rectTop < _windowHeight) &&
+            (rectLeft + e.width > 0 && rectLeft < _windowWidth) ||
+            (rectBottom > 0 && rectBottom < _windowHeight)
         );
-    };
-
-    var evalScripts = function (scripts, startIndex) {
-        var scriptsCount = scripts.length;
-        for (var i = startIndex; i < scriptsCount; i++) {
-            var breakAfterThisScript = false;
-            var script = scripts[i];
-            var newScript = document.createElement('script');
-            var type = script.getAttribute('type');
-            if (type !== null) {
-                newScript.setAttribute("type", type);
-            }
-            var src = script.getAttribute('src');
-            if (src !== null) {
-                newScript.setAttribute("src", src);
-                if ((typeof script.async === 'undefined' || script.async === false) && i + 1 < scriptsCount) {
-                    breakAfterThisScript = true;
-                    newScript.addEventListener('load', function () {
-                        evalScripts(scripts, i + 1);
-                    });
-                }
-            }
-            newScript.innerHTML = script.innerHTML;
-            script.parentNode.insertBefore(newScript, script);
-            script.parentNode.removeChild(script);
-            if (breakAfterThisScript) {
-                break;
-            }
-        }
     };
 
     var updateImage = function (container, element) {
@@ -81,7 +50,7 @@ var lazzy = typeof lazzy !== 'undefined' ? lazzy : (function () {
                     }
                     var add = false;
                     if (optionImage.indexOf('.webp', optionImage.length - 5) !== -1) {
-                        if (hasWebPSupport) {
+                        if (_hasWebPSupport) {
                             add = true;
                         }
                     } else {
@@ -158,48 +127,28 @@ var lazzy = typeof lazzy !== 'undefined' ? lazzy : (function () {
     };
 
     var updateWindowSize = function () {
-        windowWidth = window.innerWidth;
-        windowHeight = window.innerHeight;
+        _windowWidth = window.innerWidth;
+        _windowHeight = window.innerHeight;
     };
 
     var updateElement = function (element) {
-
-        if (doneElements.indexOf(element) !== -1) {
+        if (_doneElements.indexOf(element) !== -1) {
             return;
         }
-
         if (!isVisible(element)) {
             return;
         }
-
-        var lazyContent = element.getAttribute('data-lazycontent');
-        console.log(lazyContent);
-        if (lazyContent !== null) {
-            console.log('lazyContent');
-            doneElements.push(element);
-            mutationObserverIsDisabled = true;
-            element.innerHTML = lazyContent;
-            var scripts = element.querySelectorAll('script');
-            if (scripts.length > 0) {
-                evalScripts(scripts, 0);
-            }
-            mutationObserverIsDisabled = false;
-            return;
-        }
-
-        if (hasSrcSetSupport) {
+        if (_hasSrcSetSupport) {
             if (element.tagName.toLowerCase() === 'img') { // image with unknown height
                 updateImage(element, element);
                 return;
             }
-
             var imageElement = element.querySelector('img');
             if (imageElement !== null) { // image with parent container
                 updateImage(element, imageElement);
                 return;
             }
         }
-
     };
 
     var run = function (options) {
@@ -227,14 +176,15 @@ var lazzy = typeof lazzy !== 'undefined' ? lazzy : (function () {
         var image = new Image();
         image.src = 'data:image/webp;base64,UklGRiQAAABXRUJQVlA4IBgAAAAwAQCdASoCAAEADMDOJaQAA3AA/uuuAAA=';
         image.onload = image.onerror = function () {
-            hasWebPSupport = image.width === 2;
-            hasSrcSetSupport = 'srcset' in document.createElement('img');
+            _hasWebPSupport = image.width === 2;
+            _hasSrcSetSupport = 'srcset' in document.createElement('img');
 
             var requestAnimationFrameFunction = window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || function (callback) {
                 window.setTimeout(callback, 1000 / 60);
             };
 
             var hasChange = true;
+
             var runIfHasChange = function () {
                 if (hasChange) {
                     hasChange = false;
@@ -245,8 +195,7 @@ var lazzy = typeof lazzy !== 'undefined' ? lazzy : (function () {
 
             runIfHasChange();
 
-            if (hasIntersectionObserverSupport) {
-
+            if (_hasIntersectionObserverSupport) {
                 var updateIntersectionObservers = function () {
                     var elements = document.querySelectorAll(_selector);
                     var elementsCount = elements.length;
@@ -258,7 +207,6 @@ var lazzy = typeof lazzy !== 'undefined' ? lazzy : (function () {
                         }
                     }
                 };
-
                 var intersectionObserver = new IntersectionObserver(function (entries) {
                     for (var i in entries) {
                         var entry = entries[i];
@@ -267,13 +215,11 @@ var lazzy = typeof lazzy !== 'undefined' ? lazzy : (function () {
                         }
                     }
                 });
-
                 var changeTimeout = null;
-
             }
 
             var setChanged = function () {
-                if (hasIntersectionObserverSupport) {
+                if (_hasIntersectionObserverSupport) {
                     window.clearTimeout(changeTimeout);
                     changeTimeout = window.setTimeout(function () {
                         hasChange = true;
@@ -305,14 +251,14 @@ var lazzy = typeof lazzy !== 'undefined' ? lazzy : (function () {
                 });
                 window.addEventListener('scroll', setChanged);
                 window.addEventListener('load', setChanged);
-                if (hasIntersectionObserverSupport) {
+                if (_hasIntersectionObserverSupport) {
                     updateIntersectionObservers();
                 }
                 updateParentNodesScrollListeners();
                 if (typeof MutationObserver !== 'undefined') {
                     var observer = new MutationObserver(function () {
-                        if (!mutationObserverIsDisabled) {
-                            if (hasIntersectionObserverSupport) {
+                        if (!_mutationObserverIsDisabled) {
+                            if (_hasIntersectionObserverSupport) {
                                 updateIntersectionObservers();
                             }
                             updateParentNodesScrollListeners();
@@ -325,6 +271,7 @@ var lazzy = typeof lazzy !== 'undefined' ? lazzy : (function () {
                     });
                 }
             };
+
             if (document.readyState === 'loading') {
                 document.addEventListener('DOMContentLoaded', initialize);
             } else {
@@ -337,5 +284,4 @@ var lazzy = typeof lazzy !== 'undefined' ? lazzy : (function () {
         'run': run,
         'isVisible': isVisible
     };
-
 }());

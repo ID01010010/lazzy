@@ -1,3 +1,11 @@
+/*
+ * Lazzy
+ * https://github.com/ID01010010/lazzy
+ * Copyright 2018-2019, ID01010010
+ * Free to use under the MIT license.
+ * based on Responsively Lazy (http://ivopetkov.com/b/lazy-load-responsive-images/) by Ivo Petkov
+*/
+
 var lazzy = typeof lazzy !== 'undefined' ? lazzy : (function () {
     var _hasWebPSupport = false;
     var _hasSrcSetSupport = false;
@@ -8,7 +16,7 @@ var lazzy = typeof lazzy !== 'undefined' ? lazzy : (function () {
     var _doneElements = [];
     var _selector = '.lazzy';
     var _offset = 0;
-    var _offsetX = 0;
+    var _offsetPercentage = 0;
 
     var isVisible = function (element) {
         if (_windowWidth === null) {
@@ -17,8 +25,17 @@ var lazzy = typeof lazzy !== 'undefined' ? lazzy : (function () {
 
         var e = element.getBoundingClientRect();
         var rectTop = e.top + (-_offset);
-        var rectBottom = e.bottom + _offset;
-        var rectLeft = e.left + (-_offsetX);
+        var rectBottom = e.bottom;
+        var rectLeft = e.left;
+
+        if (_offsetPercentage) {
+            var windowHeightWithOffset =  _windowHeight + _windowHeight * _offsetPercentage;
+
+            return (
+                (rectTop + e.height > 0 && rectTop < windowHeightWithOffset) &&
+                (rectLeft + e.width > 0 && rectLeft < _windowWidth)
+            );
+        }
 
         return (
             (rectTop + e.height > 0 && rectTop < _windowHeight) &&
@@ -152,13 +169,19 @@ var lazzy = typeof lazzy !== 'undefined' ? lazzy : (function () {
     };
 
     var run = function (options) {
-        if (typeof options === 'string') {
+        var optionsType = Object.prototype.toString.call(options);
+
+        if (typeof options === 'string' || optionsType === '[object Array]') {
             _selector = options || _selector;
         }
-        if (typeof options === 'object') {
+
+        if (optionsType === '[object Object]') {
             _selector = options.selector || _selector;
-            _offset = options.offset || _offset;
-            _offsetX = options.offsetX || _offsetX;
+            if (typeof options.offset === 'number' || options.offset.indexOf('px') !== -1) {
+                _offset = parseInt(options.offset) || _offset;
+            } else if (typeof options.offset === 'string' && options.offset.indexOf('%') !== -1) {
+                _offsetPercentage = parseFloat(options.offset) / 100 || _offsetPercentage;
+            }
         }
 
         var elements = document.querySelectorAll(_selector);

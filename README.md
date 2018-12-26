@@ -13,7 +13,7 @@ npm i -S lazzy
 ```
 
 
-The library does not have any dependencies, and it's just 1.1kb gzipped and minified.
+The library does not have any dependencies, and it's just 1.45kb gzipped and minified.
 
 ## Usage
 
@@ -22,14 +22,14 @@ To use lazzy just add the `.lazzy` class and the following `srcset` to your imag
 <img class="lazzy" src="images/2500.jpg" srcset="data:image/gif;base64,R0lGODlhAQABAIAAAP///////yH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" alt="" />
 ```
 
-To use lazzy with **responsive images** list your images in the `data-srcset` attribute:
+To use lazzy with **responsive images**, list your images in the `data-srcset` attribute:
 ```html
 <img class="lazzy" src="images/2500.jpg" data-srcset="images/400.jpg 400w, images/400.webp 400w, images/600.jpg 600w, images/1000.jpg 1000w" srcset="data:image/gif;base64,R0lGODlhAQABAIAAAP///////yH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" alt="" />
 ```
 
 ## Customization
 
-You don't need to init lazzy. But if you want to use a custom selector run the following code:
+You don't need to init lazzy. But if you want to use a **custom selector**, run the following code:
 ```js
 lazzy.run('.my-lazzy-selector');
 ```
@@ -38,15 +38,30 @@ Or apply lazzy to all images:
 ```js
 lazzy.run('img');
 ```
+or
+```js
+lazzy.run(['.my-lazzy-wrapper > img', '.my-lazzy-selector']);
+```
 
-With Lazzy, you can easily preload your images by adding an offset:
+With Lazzy, you can easily **preload** images by adding an `offset`:
 ```js
 lazzy.run({
     selector: '.my-lazzy-selector',
-    offset: 100 // Load images 100px earlier. 0 by default
+    offset: '100px' // Load images 100px earlier
 });
 ```
-In addition, `offsetX` is available in options to use in some special cases
+or
+```js
+lazzy.run({
+    offset: 100 // Load images 100px earlier
+});
+```
+Or, set the `offset` as a **percentage** of the current viewport height:
+```js
+lazzy.run({
+    offset: '20%' // Load images 20% earlier
+});
+```
 
 ## A concept
 

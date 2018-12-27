@@ -34,11 +34,7 @@ You don't need to init lazzy. But if you want to use a **custom selector**, run 
 lazzy.run('.my-lazzy-selector');
 ```
 
-Or apply lazzy to all images:
-```js
-lazzy.run('img');
-```
-or
+Or specify **multiple selectors**:
 ```js
 lazzy.run(['.my-lazzy-wrapper > img', '.my-lazzy-selector']);
 ```
@@ -46,7 +42,7 @@ lazzy.run(['.my-lazzy-wrapper > img', '.my-lazzy-selector']);
 With Lazzy, you can easily **preload** images by adding an `offset`:
 ```js
 lazzy.run({
-    selector: '.my-lazzy-selector',
+    selector: ['.my-lazzy-page > img', '.my-lazzy-selector'],
     offset: '100px' // Load images 100px earlier
 });
 ```

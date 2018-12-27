@@ -171,13 +171,13 @@ var lazzy = typeof lazzy !== 'undefined' ? lazzy : (function () {
     var run = function (options) {
         var optionsType = Object.prototype.toString.call(options);
 
-        if (typeof options === 'string' || optionsType === '[object Array]') {
+        if (optionsType === '[object String]' || optionsType === '[object Array]') {
             _selector = options || _selector;
         }
 
         if (optionsType === '[object Object]') {
             _selector = options.selector || _selector;
-            if (typeof options.offset === 'number' || options.offset.indexOf('px') !== -1) {
+            if (typeof options.offset === 'number' || typeof options.offset === 'string' && options.offset.indexOf('px') !== -1) {
                 _offset = parseInt(options.offset) || _offset;
             } else if (typeof options.offset === 'string' && options.offset.indexOf('%') !== -1) {
                 _offsetPercentage = parseFloat(options.offset) / 100 || _offsetPercentage;

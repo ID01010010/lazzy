@@ -12,12 +12,12 @@
 npm i lazzy
 ```
 
-Require as a module
+Require as a module:
 ```js
 const lazzy = require('lazzy');
 ```
 
-In a browser:
+In browser:
 ```html
 <script src="path/to/lazzy.js"></script>
 ```
@@ -75,6 +75,10 @@ lazzy.run({
 ## A concept
 
 A lightweight lib that doesn't break your HTML by removing the `src`.
+
+To avoid unnecessary requests lazzy uses a base64-encoded 1x1px image in `srcset` as a placeholder - `data:image/gif;base64,R0lGOD...`
+
+Note that you can use your own placeholder images in `srcset`. For example, blurred previews when downloading better quality images.
 
 
 ## Browser support

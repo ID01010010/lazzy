@@ -90,14 +90,16 @@ lazzy.run({
 
 A lightweight lib that doesn't break your HTML by removing the `src`.
 
-To avoid unnecessary requests lazzy uses a base64-encoded 1x1px image in `srcset` as a placeholder - `data:image/gif;base64,R0lGOD...`
+To avoid unnecessary requests lazzy uses a base64-encoded 1x1px image in the `srcset` attribute as a placeholder - `data:image/gif;base64,R0lGOD...`
 
-Note that you can use your own placeholder images in `srcset`. For example, blurred previews when downloading better quality images.
+Note that you can use your own placeholder images. For example, blurred previews when downloading better quality images.
 
 
 ## Browser support
 
-The lazy loading works in browsers supporting the `srcset` attribute. As of January 2019 that's [88.65%](http://caniuse.com/#feat=srcset). Unsupported browsers will load the image in the `src` attribute. **That's the image search engines and social networks will find, so it's better to make it high resolution.**
+The lazy loading works in browsers supporting the `srcset` attribute, that's about [90%](http://caniuse.com/#feat=srcset).
+
+Unsupported browsers will load the image in the `src` attribute. **That's the image search engines and social networks will find, so it's better to make it high resolution.**
 
 
 ## DOM changes

@@ -57,24 +57,24 @@ or specify **multiple selectors**:
 lazzy.run(['.my-lazzy-page img', '.my-lazzy-selector']);
 ```
 
-### Offset
-With Lazzy, you can easily **preload** images by adding an `offset`:
+### Preload images
+With Lazzy, you can easily **preload** images by setting the `preload` rule:
 ```js
 lazzy.run({
     selector: ['.my-lazzy-page img', '.my-lazzy-selector'],
-    offset: '100px' // Load images 100px earlier
+    preload: '100px' // Load images 100px earlier
 });
 ```
 or
 ```js
 lazzy.run({
-    offset: 100 // Load images 100px earlier
+    preload: 100 // Load images 100px earlier
 });
 ```
-or, set the `offset` as a **percentage** of the current viewport height:
+or, set the `preload` as a **percentage** of the current viewport height:
 ```js
 lazzy.run({
-    offset: '20%' // Load images 20% earlier
+    preload: '20%' // Load images 20% earlier
 });
 ```
 

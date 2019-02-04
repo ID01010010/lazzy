@@ -19,7 +19,7 @@ const lazzy = require('lazzy');
 
 In browser:
 ```html
-<script src="path/to/lazzy.js"></script>
+<script src="dist/lazzy.min.js"></script>
 ```
 
 
@@ -27,12 +27,19 @@ In browser:
 
 To use lazzy just add the `.lazzy` class and the following `srcset` to your images:
 ```html
-<img class="lazzy" src="images/2500.jpg" srcset="data:image/gif;base64,R0lGODlhAQABAIAAAP///////yH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" alt="" />
+<img class="lazzy"
+    src="images/1200.png"
+    srcset="data:image/gif;base64,R0lGODlhAQABAIAAAP///////yH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
+    alt="" />
 ```
 
 To use lazzy with **responsive images**, list your images in the `data-srcset` attribute:
 ```html
-<img class="lazzy" src="images/2500.jpg" data-srcset="images/400.jpg 400w, images/400.webp 400w, images/600.jpg 600w, images/1000.jpg 1000w" srcset="data:image/gif;base64,R0lGODlhAQABAIAAAP///////yH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" alt="" />
+<img class="lazzy"
+    src="images/1200.png"
+    data-srcset="images/400.png 400w, images/600.png 600w, images/1000.png 1000w"
+    srcset="data:image/gif;base64,R0lGODlhAQABAIAAAP///////yH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
+    alt="" />
 ```
 
 
@@ -71,6 +78,13 @@ lazzy.run({
 });
 ```
 
+### Retina & 4k support
+Request an image in resolution depending on Pixel density (PPI)
+```js
+lazzy.run({
+    isDependingOnPixelDensity: true // false, by default
+});
+```
 
 ## A concept
 

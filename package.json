@@ -1,8 +1,8 @@
 {
     "name": "lazzy",
     "title": "Lazzy",
-    "version": "2.0.0",
-    "description": "Lazy load responsive images",
+    "version": "3.0.0",
+    "description": "Modern and lightweight lazy loading library",
     "homepage": "https://github.com/ID01010010/lazzy",
     "author": {
         "name": "ID01010010",
@@ -16,10 +16,16 @@
         "url": "https://github.com/ID01010010/lazzy/issues"
     },
     "keywords": [
-        "images",
+        "lazzy",
+        "lazy",
         "lazyload",
+        "images",
         "responsive",
-        "seo"
+        "seo",
+        "optimization",
+        "performance",
+        "lightweight",
+        "no dependencies"
     ],
     "license" : "MIT"
 }
